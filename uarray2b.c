@@ -15,9 +15,26 @@ struct T {
     UArray2_T blocks;
 };
 
+
+// static int is_ok(T a)
+// {
+//         return a && UArray2_height(a->blocks) == a->height &&
+//                 UArray2_width(a->blocks) == ((a->width + a->blocksize - 1) / a->blocksize) &&
+//                 UArray2_size(a->blocks) == sizeof(UArray2_T) &&
+//                 (a->height == 0 || 
+//                 (UArray2_width(UArray2_at(a->blocks, 0, 0)) == ((a->width + a->blocksize - 1) / a->blocksize) &&
+//                 UArray2_size(UArray2_at(a->blocks, 0, 0)) == a->size));
+// }
+
+
 T UArray2b_new (int width, int height, int size, int blocksize) 
 {
-
+        T uarray2b;
+        NEW(uarray2b);
+        uarray2b->width  = width;
+        uarray2b->height = height;
+        uarray2b->size   = size;
+        uarray2b.
 }
 
 
