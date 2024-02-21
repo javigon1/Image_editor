@@ -6,6 +6,8 @@
 #include "uarray2.h"
 #include "uarray.h"
 
+/* THIS FILE NEEDS A LOT OF TESTING - USE TEST.C TO TEST IT */
+
 #define T UArray2b_T
 
 struct T {
@@ -17,24 +19,12 @@ struct T {
 };
 
 
-// static int is_ok(T a)
-// {
-//         return a && UArray2_height(a->blocks) == a->height &&
-//                 UArray2_width(a->blocks) == ((a->width + a->blocksize - 1) / a->blocksize) &&
-//                 UArray2_size(a->blocks) == sizeof(UArray2_T) &&
-//                 (a->height == 0 || 
-//                 (UArray2_width(UArray2_at(a->blocks, 0, 0)) == ((a->width + a->blocksize - 1) / a->blocksize) &&
-//                 UArray2_size(UArray2_at(a->blocks, 0, 0)) == a->size));
-// }
-
-
-// static inline int num_blocks(int dimension, int blocksize) {
-//         return (dimension + blocksize - 1) / blocksize;
-// }
-
-
 T UArray2b_new (int width, int height, int size, int blocksize) 
 {
+        assert(blocksize >= 1);
+        assert(width > 0);
+        assert(height > 0);
+        assert(size > 0);
         T array2b;
         NEW(array2b);
         array2b->width  = width;
@@ -89,6 +79,7 @@ void UArray2b_free (T *array2b)
         FREE(*array2b);
 }
 
+
 int UArray2b_width (T array2b)
 {
         assert(array2b != NULL);
@@ -134,20 +125,26 @@ void *UArray2b_at(T array2b, int column, int row)
 }
 
 
+/* WE HAVE TO CHECK FOR UNUSED CELLS */
 void UArray2b_map(T array2b, void apply(int col, int row, T array2b, void *elem,
                   void *cl), void *cl)
 {
         assert(array2b != NULL);
 
         int blocksize = array2b->blocksize;
-        int width = array2b->width;
-        int height = array2b->height;
+        /* array2b->width + blocksize - 1 allows us to visit non-full blocks */
+        int block_width = (array2b->width + blocksize - 1) / blocksize;
+        int block_height = (array2b->height + blocksize - 1) / blocksize;
 
-        for (int block_row = 0; block_row < height; block_row += blocksize) {
-                for (int block_col = 0; block_col < width; block_col += blocksize) {
-                        for (int row = block_row; row < block_row + blocksize && row < height; row++) {
-                                for (int col = block_col; col < block_col + blocksize && col < width; col++) {
-                                        apply(col, row, array2b, UArray2b_at(array2b, col, row), cl);
+        for (int block_row = 0; block_row < block_height; block_row++) {
+                for (int block_col = 0; block_col < block_width; block_col++) {
+                        for (int i = 0; i < blocksize; i++) {
+                                for (int j = 0; j < blocksize; j++) {
+                                        int col = block_col * blocksize + j;
+                                        int row = block_row * blocksize + i;
+                                        if (col < array2b->width && row < array2b->height) {
+                                                apply(col, row, array2b, UArray2b_at(array2b, col, row), cl);
+                                        }
                                 }
                         }
                 }
