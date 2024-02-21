@@ -28,9 +28,9 @@ struct T {
 // }
 
 
-static inline int num_blocks(int dimension, int blocksize) {
-    return (dimension + blocksize - 1) / blocksize;
-}
+// static inline int num_blocks(int dimension, int blocksize) {
+//         return (dimension + blocksize - 1) / blocksize;
+// }
 
 
 T UArray2b_new (int width, int height, int size, int blocksize) 
@@ -40,6 +40,7 @@ T UArray2b_new (int width, int height, int size, int blocksize)
         array2b->width  = width;
         array2b->height = height;
         array2b->size   = size;
+        array2b->blocksize = blocksize;
 
         int block_width = (width + blocksize - 1) / blocksize;
         int block_height = (height + blocksize - 1) / blocksize;
@@ -119,7 +120,7 @@ int UArray2b_blocksize(T array2b)
 void *UArray2b_at(T array2b, int column, int row)
 {
         assert(array2b != NULL);
-        assert(column >= 0 && column < array2b->width && row > 0 && row <= array2b->height);
+        assert(column >= 0 && column < array2b->width && row >= 0 && row < array2b->height);
 
         int blocksize = array2b->blocksize;
 
