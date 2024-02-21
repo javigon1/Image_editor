@@ -91,19 +91,23 @@ int main(int argc, char *argv[])
 
         /**********************cli 2/21****************************/
         FILE *fp;
-        char *image_file = argv[argc - 1];
-        fp = fopen(image_file, "r");
-        assert(fp != NULL);
+        fp = fopen(argv[argc - 1], "rb");
 
-        fprintf(stderr, "check\n");
+        if (!fp) {
+                fprintf(stderr, 
+                        "Error: Cannot open file '%s' for reading.\n", 
+                        argv[argc - 1]);
+                exit(EXIT_FAILURE);
+        }
 
-        Pnm_ppm image = Pnm_ppmread(fp, methods);
+        Pnm_ppm orig_image = Pnm_ppmread(fp, methods);
+        assert(orig_image);
 
-        fprintf(stderr, "name: %s", argv[argc - 1]);
+        fclose(fp);
 
-        Pnm_ppmwrite(stdout, image);
-        
-        Pnm_ppmfree(&image);
+        Pnm_ppmwrite(stdout, orig_image);
+
+        Pnm_ppmfree(&orig_image);
 
         /**********************cli 2/21****************************/
 
