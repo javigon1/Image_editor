@@ -21,8 +21,7 @@
         }                                                       \
 } while (false)
 
-static void
-usage(const char *progname)
+static void usage(const char *progname)
 {
         fprintf(stderr, "Usage: %s [-rotate <angle>] "
                         "[-{row,col,block}-major] "
@@ -40,9 +39,8 @@ int main(int argc, char *argv[])
 
         (void)time_file_name;
 
-
         /* default to UArray2 methods */
-        A2Methods_T methods = uarray2_methods_plain; 
+        A2Methods_T methods = uarray2_methods_blocked; 
         assert(methods != NULL);
 
         /* default to best map */
@@ -91,5 +89,23 @@ int main(int argc, char *argv[])
                 }
         }
 
-        assert(false);    // the rest of this function is not yet implemented
+        /**********************cli 2/21****************************/
+        FILE *fp;
+        char *image_file = argv[argc - 1];
+        fp = fopen(image_file, "r");
+        assert(fp != NULL);
+
+        fprintf(stderr, "check\n");
+
+        Pnm_ppm image = Pnm_ppmread(fp, methods);
+
+        fprintf(stderr, "name: %s", argv[argc - 1]);
+
+        Pnm_ppmwrite(stdout, image);
+        
+        Pnm_ppmfree(&image);
+
+        /**********************cli 2/21****************************/
+
+        return 0;
 }
