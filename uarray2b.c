@@ -4,7 +4,7 @@
 #include "mem.h"
 #include "uarray2b.h"
 #include "uarray2.h"
-#include "uarray.h"
+#include <uarray.h>
 
 /* THIS FILE NEEDS A LOT OF TESTING - USE TEST.C TO TEST IT */
 
