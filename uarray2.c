@@ -86,10 +86,8 @@ int UArray2_size(T array2)
         return array2->size;
 }
 
-void UArray2_map_row_major(T array2, 
-                           void apply(int i, int j, T array2, 
-                                      void *elem, void *cl), 
-                           void *cl)
+void UArray2_map_row_major(T array2, void apply(int i, int j, T array2, 
+                           void *elem, void *cl), void *cl)
 {
         assert(array2!= NULL);
         int h = array2->height;  /* keeping height and width in registers */
@@ -102,10 +100,8 @@ void UArray2_map_row_major(T array2,
         }
 }
 
-void UArray2_map_col_major(T array2, 
-                           void apply(int i, int j, T array2, 
-                                      void *elem, void *cl), 
-                           void *cl)
+void UArray2_map_col_major(T array2, void apply(int i, int j, T array2, 
+                           void *elem, void *cl), void *cl)
 {
         assert(array2 != NULL);
         int h = array2->height;  /* keeping height and width in registers */

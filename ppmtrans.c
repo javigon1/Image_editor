@@ -38,6 +38,9 @@ int main(int argc, char *argv[])
         int   rotation       = 0;
         int   i;
 
+        (void)time_file_name;
+
+
         /* default to UArray2 methods */
         A2Methods_T methods = uarray2_methods_plain; 
         assert(methods != NULL);
