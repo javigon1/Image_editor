@@ -129,13 +129,13 @@ void *UArray2b_at(T array2b, int column, int row)
         return UArray_at(*block, index);
 }
 
-
-/* WE HAVE TO CHECK FOR UNUSED CELLS */
+/* we should try and make the second nested loop in a helper function */
 void UArray2b_map(T array2b, void apply(int col, int row, T array2b, void *elem,
                   void *cl), void *cl)
 {
         assert(array2b != NULL);
         assert(apply != NULL);
+        assert(cl != NULL);
 
         int blocksize = array2b->blocksize;
         /* array2b->width + blocksize - 1 allows us to visit non-full blocks */
