@@ -4,7 +4,7 @@
 #include "mem.h"
 #include "uarray2b.h"
 #include "uarray2.h"
-#include "uarray.h"
+#include <uarray.h>
 
 /* THIS FILE NEEDS A LOT OF TESTING - USE TEST.C TO TEST IT */
 
@@ -25,6 +25,7 @@ T UArray2b_new (int width, int height, int size, int blocksize)
         assert(width > 0);
         assert(height > 0);
         assert(size > 0);
+
         T array2b;
         NEW(array2b);
         array2b->width  = width;
@@ -51,6 +52,10 @@ T UArray2b_new (int width, int height, int size, int blocksize)
 
 T UArray2b_new_64K_block(int width, int height, int size)
 {
+        assert(width > 0);
+        assert(height > 0);
+        assert(size > 0);
+
         int blocksize = 1;
         while (blocksize * blocksize * size <= 64 * 1024) {
                 blocksize++;
@@ -130,6 +135,7 @@ void UArray2b_map(T array2b, void apply(int col, int row, T array2b, void *elem,
                   void *cl), void *cl)
 {
         assert(array2b != NULL);
+        assert(apply != NULL);
 
         int blocksize = array2b->blocksize;
         /* array2b->width + blocksize - 1 allows us to visit non-full blocks */
