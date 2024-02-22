@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
         char *time_file_name = NULL;
         int   rotation       = 0;
         int   i;
-        int count            = 0;
         bool file_given   = false;
 
         (void)time_file_name;
@@ -54,20 +53,16 @@ int main(int argc, char *argv[])
                 if (strcmp(argv[i], "-row-major") == 0) {
                         SET_METHODS(uarray2_methods_plain, map_row_major, 
                                     "row-major");
-                        count++;
                 } else if (strcmp(argv[i], "-col-major") == 0) {
                         SET_METHODS(uarray2_methods_plain, map_col_major, 
                                     "column-major");
-                        count++;
                 } else if (strcmp(argv[i], "-block-major") == 0) {
                         SET_METHODS(uarray2_methods_blocked, map_block_major,
                                     "block-major");
-                        count++;
                 } else if (strcmp(argv[i], "-rotate") == 0) {
                         if (!(i + 1 < argc)) {      /* no rotate value */
                                 usage(argv[0]);
                         }
-                        count++;
                         char *endptr;
                         rotation = strtol(argv[++i], &endptr, 10);
                         if (!(rotation == 0 || rotation == 90 ||
@@ -83,7 +78,6 @@ int main(int argc, char *argv[])
                         if (!(i + 1 < argc)) {      /* no time file */
                                 usage(argv[0]);
                         }
-                        count++;
                         time_file_name = argv[++i];
                 } else if (*argv[i] == '-') {
                         fprintf(stderr, "%s: unknown option '%s'\n", argv[0],
@@ -94,14 +88,12 @@ int main(int argc, char *argv[])
                         usage(argv[0]);
                 } else {
                         file_given = true;
-                        break;
                 }
         }
 
         /**********************cli 2/21****************************/
         FILE *fp;
         if (!file_given) {
-                printf("no file given!\n");
                 fp = stdin;
         } else {
                 fp = fopen(argv[argc - 1], "rb");
@@ -113,19 +105,12 @@ int main(int argc, char *argv[])
                 }
         }
 
-        /* DIFFERENT USES!
-        ./ppmtrans -rotate 90 -col-major -time filename 
-        ./ppmtrans -rotate 0 filename
-        ./ppmtrans -rotate 90 -time filename
-        .ppmtrans - rotate 0 -col-major filename */
-
         Pnm_ppm orig_image = Pnm_ppmread(fp, methods);
         assert(orig_image);
 
         fclose(fp);
 
         Pnm_ppmwrite(stdout, orig_image);
-
         Pnm_ppmfree(&orig_image);
 
         /**********************cli 2/21****************************/
