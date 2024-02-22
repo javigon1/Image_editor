@@ -22,9 +22,10 @@
 } while (false)
 
 
+void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
-void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 
 static void usage(const char *progname)
 {
@@ -119,33 +120,31 @@ int main(int argc, char *argv[])
         assert(orig_image);
 
         A2Methods_UArray2 new_image;
-        // fprintf(stderr, "Width at the start: %d\n", methods->width(orig_image));
-        // fprintf(stderr, "Height at the start: %d\n", methods->height(orig_image));
 
         if (rotation == 0) {
                 new_image = methods->new(methods->width(orig_image), 
                                          methods->height(orig_image),
                                          sizeof(struct Pnm_rgb));
                 struct closure infoGet = {methods, new_image};
-                map(orig_image->pixels, rotate90, &infoGet);
+                map(orig_image->pixels, rotate0, &infoGet);
         } else if (rotation == 90) {
-                // fprintf(stderr, "Width: %d\n", methods->height(orig_image));
-                // fprintf(stderr, "Height: %d\n", methods->width(orig_image));
                 new_image = methods->new(methods->height(orig_image), 
                                          methods->width(orig_image),
                                          sizeof(struct Pnm_rgb));
-                                        // fprintf(stderr, "djhi\n");
                 struct closure infoGet = {methods, new_image};
                 map(orig_image->pixels, rotate90, &infoGet);
-                // SWAP THE VALUES OF THE WIDTH AND THE HEIGHT
         } else if (rotation == 180) {
                 new_image = methods->new(methods->width(orig_image), 
                                          methods->height(orig_image),
                                          sizeof(struct Pnm_rgb));
                 struct closure infoGet = {methods, new_image};
-                map(orig_image->pixels, rotate90, &infoGet);
+                map(orig_image->pixels, rotate180, &infoGet);
         } else if (rotation == 270) {
-                // bonus over here
+                new_image = methods->new(methods->height(orig_image), 
+                                         methods->width(orig_image),
+                                         sizeof(struct Pnm_rgb));
+                struct closure infoGet = {methods, new_image};
+                map(orig_image->pixels, rotate270, &infoGet);
         } else {
                 // other bonuses
         }
@@ -162,50 +161,58 @@ int main(int argc, char *argv[])
 }
 
 
+void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+{
+        (void)array2;
+        struct closure *info = cl;
+
+        Pnm_rgb array_pixel = elem;
+        Pnm_rgb rotated_pixel = info->methods->at(info->array2, i, j);
+        *rotated_pixel = *array_pixel;
+}       
+
+
 void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
 {
-        // (void)array2;
-        // fprintf(stderr, "hdbjdns\n");
         struct closure *info = cl;
-        
         int height = info->methods->height(array2);
         int width = info->methods->width(array2);
-
-        // fprintf(stderr, "Rotating pixel [%d, %d] -> [%d, %d]\n", i, j, height - j - 1, i);
 
         if (height - j - 1 < 0 || height - j - 1 >= height || i < 0 || i >= width) {
                 fprintf(stderr, "Error: Invalid pixel coordinates (%d, %d) -> (%d, %d)\n", i, j, height - j - 1, i);
                 exit(EXIT_FAILURE);
         }
 
-        // fprintf(stderr, "Accessing pixel at [%d, %d]\n", height - j - 1, i);
         Pnm_rgb array_pixel = elem;
-        // fprintf(stderr, "Got element\n");
         Pnm_rgb rotated_pixel = info->methods->at(info->array2, height - j - 1, i);
-        // fprintf(stderr, "Got rotated pixel\n");
         *rotated_pixel = *array_pixel;
-        // fprintf(stderr, "Performed conversion\n");
 }
 
 
 void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
 {
-        (void)array2;
-        Pnm_ppm image = cl;
-        // Pnm_rgb array_pixel = elem;
+        struct closure *info = cl;
+        int height = info->methods->height(array2);
+        int width = info->methods->width(array2);
 
-        int height = image->height;
-        int width = image->width;
-        Pnm_rgb rotated_pixel = image->methods->at(image->pixels, width - i - 1, height - j - 1);
-        *((Pnm_rgb)elem) = *rotated_pixel;
+        Pnm_rgb array_pixel = elem;
+        Pnm_rgb rotated_pixel = info->methods->at(info->array2, width - i - 1, height - j - 1);
+        *rotated_pixel = *array_pixel;
 }
 
 
-void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
 {
-        (void)array2;
-        Pnm_ppm image = cl;
+        struct closure *info = cl;
+        int height = info->methods->height(array2);
+        int width = info->methods->width(array2);
+
+        if (j < 0 || j >= height || width - i - 1 < 0 || width - i - 1 >= width) {
+                fprintf(stderr, "Error: Invalid pixel coordinates (%d, %d) -> (%d, %d)\n", i, j, height - j - 1, i);
+                exit(EXIT_FAILURE);
+        }
+
         Pnm_rgb array_pixel = elem;
-        Pnm_rgb rotated_pixel = image->methods->at(image->pixels, i, j);
-        *array_pixel = *rotated_pixel;
-}       
+        Pnm_rgb rotated_pixel = info->methods->at(info->array2, j, width - i - 1);
+        *rotated_pixel = *array_pixel;
+}  

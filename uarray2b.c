@@ -135,7 +135,6 @@ void UArray2b_map(T array2b, void apply(int col, int row, T array2b, void *elem,
 {
         assert(array2b != NULL);
         assert(apply != NULL);
-        // assert(cl != NULL);
 
         int blocksize = array2b->blocksize;
         /* array2b->width + blocksize - 1 allows us to visit non-full blocks */
