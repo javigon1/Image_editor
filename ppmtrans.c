@@ -118,18 +118,19 @@ int main(int argc, char *argv[])
 
         if (rotation == 0) {
                 new_image = methods->new(methods->width(orig_image), 
-                                     methods->height(orig_image),
-                                     sizeof(struct Pnm_rgb));
+                                         methods->height(orig_image),
+                                         sizeof(struct Pnm_rgb));
                 map(new_image, rotate0, orig_image);
         } else if (rotation == 90) {
                 new_image = methods->new(methods->height(orig_image), 
-                                     methods->width(orig_image),
-                                     sizeof(struct Pnm_rgb));
+                                         methods->width(orig_image),
+                                         sizeof(struct Pnm_rgb));
                 map(new_image, rotate90, orig_image);
+                // SWAP THE VALUES OF THE WIDHT AND THE HEIGHT
         } else if (rotation == 180) {
                 new_image = methods->new(methods->width(orig_image), 
-                                     methods->height(orig_image),
-                                     sizeof(struct Pnm_rgb));
+                                         methods->height(orig_image),
+                                         sizeof(struct Pnm_rgb));
                 map(new_image, rotate180, orig_image);
         } else if (rotation == 270) {
                 // bonus over here
