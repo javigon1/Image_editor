@@ -25,7 +25,6 @@
 void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
-// void copy_pixel(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 
 static void usage(const char *progname)
 {
@@ -126,7 +125,7 @@ int main(int argc, char *argv[])
                                          methods->width(orig_image),
                                          sizeof(struct Pnm_rgb));
                 map(new_image, rotate90, orig_image);
-                // SWAP THE VALUES OF THE WIDHT AND THE HEIGHT
+                // SWAP THE VALUES OF THE WIDTH AND THE HEIGHT
         } else if (rotation == 180) {
                 new_image = methods->new(methods->width(orig_image), 
                                          methods->height(orig_image),
@@ -183,12 +182,3 @@ void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         Pnm_rgb rotated_pixel = image->methods->at(image->pixels, i, j);
         *array_pixel = *rotated_pixel;
 }       
-
-
-// void copy_pixel(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
-// {
-//         fprintf(stderr, "copy\n");
-//         (void)array2;
-//         Pnm_ppm new_image = *(Pnm_ppm *)cl;
-//         *((Pnm_rgb)elem) = *((Pnm_rgb)new_image->methods->at(new_image->pixels, i, j));
-// }
