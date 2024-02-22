@@ -26,6 +26,9 @@ void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void flipVertical(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 
 static void usage(const char *progname)
 {
@@ -49,6 +52,7 @@ int main(int argc, char *argv[])
         int   rotation       = 0;
         int   i;
         bool  file_given     = false;
+        bool  horizontal     = false;
         bool  vertical       = false;
         bool  transpose      = false;
 
@@ -88,24 +92,19 @@ int main(int argc, char *argv[])
                                 usage(argv[0]);
                         }
                 } else if (strcmp(argv[i], "-flip") == 0) {
-                        /* ACTUAL CHECK FOR NOT FLIP */
-                        fprintf(stderr, "Command not available\n");
-                        /* DELETE THIS IF FLIP DONE */
-                        exit(1);
                         if (!(i + 1 < argc)) {
                                 fprintf(stderr, "Direction of flip required\n");
                                 exit(1);
                         }
                         i++;
                         if (strcmp(argv[i], "horizontal") == 0) {
-                                vertical = false;
+                                horizontal = true;
                         } else if (strcmp(argv[i], "vertical") == 0) {
                                 vertical = true;
                         } else {
                                 fprintf(stderr, "Invalid direction of flip\n");
                                 exit(1);
                         }
-
                 } else if (strcmp(argv[i], "-transpose") == 0) {
                         transpose = true;
                 } else if (strcmp(argv[i], "-time") == 0) {
@@ -168,8 +167,26 @@ int main(int argc, char *argv[])
                                          sizeof(struct Pnm_rgb));
                 struct closure infoGet = {methods, new_image};
                 map(orig_image->pixels, rotate270, &infoGet);
-        } else {
-                // other bonuses
+        }
+        
+        if (horizontal) {
+                new_image = methods->new(methods->width(orig_image), 
+                                         methods->height(orig_image),
+                                         sizeof(struct Pnm_rgb));
+                struct closure infoGet = {methods, new_image};
+                map(orig_image->pixels, flipHorizontal, &infoGet);
+        } else if (vertical) {
+                new_image = methods->new(methods->width(orig_image), 
+                                         methods->height(orig_image),
+                                         sizeof(struct Pnm_rgb));
+                struct closure infoGet = {methods, new_image};
+                map(orig_image->pixels, flipVertical, &infoGet);
+        } else if (transpose) {
+                new_image = methods->new(methods->height(orig_image), 
+                                         methods->width(orig_image),
+                                         sizeof(struct Pnm_rgb));
+                struct closure infoGet = {methods, new_image};
+                map(orig_image->pixels, doTranspose, &infoGet);
         }
 
         methods->free(&orig_image->pixels);
@@ -239,3 +256,36 @@ void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         Pnm_rgb rotated_pixel = info->methods->at(info->array2, j, width - i - 1);
         *rotated_pixel = *array_pixel;
 }  
+
+
+void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+{
+        struct closure *info = cl;
+        int width = info->methods->width(array2);
+
+        Pnm_rgb array_pixel = elem;
+        Pnm_rgb rotated_pixel = info->methods->at(info->array2, width - i - 1, j);
+        *rotated_pixel = *array_pixel;
+}
+
+
+void flipVertical(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+{
+        struct closure *info = cl;
+        int height = info->methods->height(array2);
+
+        Pnm_rgb array_pixel = elem;
+        Pnm_rgb rotated_pixel = info->methods->at(info->array2, i, height - j - 1);
+        *rotated_pixel = *array_pixel;
+}
+
+
+void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl) 
+{
+        (void)array2;
+        struct closure *info = cl;
+
+        Pnm_rgb array_pixel = elem;
+        Pnm_rgb rotated_pixel = info->methods->at(info->array2, j, i);
+        *rotated_pixel = *array_pixel;
+}
