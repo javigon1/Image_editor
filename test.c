@@ -14,9 +14,10 @@ void populate_element(int col, int row, UArray2b_T array2b, void *elem, void *cl
 
 int main()
 {
-        UArray2b_T array2b = UArray2b_new(5, 5, sizeof(int), 2);
-        UArray2b_map(array2b, print_element, NULL);
-        test_new();
+        UArray2b_T array2b = UArray2b_new(10, 10, sizeof(int), 4);
+        populate(array2b);
+        int count = 0;
+        UArray2b_map(array2b, print_element, &count);
         printf("Test passed!\n");
         return 0;
 }
@@ -54,7 +55,7 @@ void populate(UArray2b_T array2b)
             *elem = count;
             count++;
         }
-    }
+}
 }
 
 

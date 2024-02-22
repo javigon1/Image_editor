@@ -21,6 +21,12 @@
         }                                                       \
 } while (false)
 
+
+void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+// void copy_pixel(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+
 static void usage(const char *progname)
 {
         fprintf(stderr, "Usage: %s [-rotate <angle>] "
@@ -42,7 +48,7 @@ int main(int argc, char *argv[])
         (void)time_file_name;
 
         /* default to UArray2 methods */
-        A2Methods_T methods = uarray2_methods_blocked; 
+        A2Methods_T methods = uarray2_methods_plain; 
         assert(methods != NULL);
 
         /* default to best map */
@@ -91,7 +97,6 @@ int main(int argc, char *argv[])
                 }
         }
 
-        /**********************cli 2/21****************************/
         FILE *fp;
         if (!file_given) {
                 fp = stdin;
@@ -106,14 +111,83 @@ int main(int argc, char *argv[])
         }
 
         Pnm_ppm orig_image = Pnm_ppmread(fp, methods);
+        fclose(fp);
         assert(orig_image);
 
-        fclose(fp);
+        A2Methods_UArray2 new_image;
+
+        if (rotation == 0) {
+                new_image = methods->new(methods->width(orig_image), 
+                                     methods->height(orig_image),
+                                     sizeof(struct Pnm_rgb));
+                map(new_image, rotate0, orig_image);
+        } else if (rotation == 90) {
+                new_image = methods->new(methods->height(orig_image), 
+                                     methods->width(orig_image),
+                                     sizeof(struct Pnm_rgb));
+                map(new_image, rotate90, orig_image);
+        } else if (rotation == 180) {
+                new_image = methods->new(methods->width(orig_image), 
+                                     methods->height(orig_image),
+                                     sizeof(struct Pnm_rgb));
+                map(new_image, rotate180, orig_image);
+        } else if (rotation == 270) {
+                // bonus over here
+        } else {
+                // other bonuses
+        }
+
+        methods->free(&orig_image->pixels);
+        orig_image->width = methods->width(new_image);
+        orig_image->height = methods->height(new_image);
+        orig_image->pixels = new_image;
 
         Pnm_ppmwrite(stdout, orig_image);
         Pnm_ppmfree(&orig_image);
 
-        /**********************cli 2/21****************************/
-
         return 0;
 }
+
+
+void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+{
+        (void)array2;
+        Pnm_ppm image = cl;
+        // Pnm_rgb array_pixel = elem;
+
+        int height = image->height;
+        Pnm_rgb rotated_pixel = image->methods->at(image->pixels, height - j - 1, i);
+        *((Pnm_rgb)elem) = *rotated_pixel;
+}
+
+
+void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+{
+        (void)array2;
+        Pnm_ppm image = cl;
+        // Pnm_rgb array_pixel = elem;
+
+        int height = image->height;
+        int width = image->width;
+        Pnm_rgb rotated_pixel = image->methods->at(image->pixels, width - i - 1, height - j - 1);
+        *((Pnm_rgb)elem) = *rotated_pixel;
+}
+
+
+void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+{
+        (void)array2;
+        Pnm_ppm image = cl;
+        Pnm_rgb array_pixel = elem;
+        Pnm_rgb rotated_pixel = image->methods->at(image->pixels, i, j);
+        *array_pixel = *rotated_pixel;
+}       
+
+
+// void copy_pixel(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
+// {
+//         fprintf(stderr, "copy\n");
+//         (void)array2;
+//         Pnm_ppm new_image = *(Pnm_ppm *)cl;
+//         *((Pnm_rgb)elem) = *((Pnm_rgb)new_image->methods->at(new_image->pixels, i, j));
+// }
