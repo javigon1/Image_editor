@@ -48,7 +48,9 @@ int main(int argc, char *argv[])
         char *time_file_name = NULL;
         int   rotation       = 0;
         int   i;
-        bool file_given   = false;
+        bool  file_given     = false;
+        bool  vertical       = false;
+        bool  transpose      = false;
 
         (void)time_file_name;
 
@@ -85,6 +87,27 @@ int main(int argc, char *argv[])
                         if (!(*endptr == '\0')) {    /* Not a number */
                                 usage(argv[0]);
                         }
+                } else if (strcmp(argv[i], "-flip") == 0) {
+                        /* ACTUAL CHECK FOR NOT FLIP */
+                        fprintf(stderr, "Command not available\n");
+                        /* DELETE THIS IF FLIP DONE */
+                        exit(1);
+                        if (!(i + 1 < argc)) {
+                                fprintf(stderr, "Direction of flip required\n");
+                                exit(1);
+                        }
+                        i++;
+                        if (strcmp(argv[i], "horizontal") == 0) {
+                                vertical = false;
+                        } else if (strcmp(argv[i], "vertical") == 0) {
+                                vertical = true;
+                        } else {
+                                fprintf(stderr, "Invalid direction of flip\n");
+                                exit(1);
+                        }
+
+                } else if (strcmp(argv[i], "-transpose") == 0) {
+                        transpose = true;
                 } else if (strcmp(argv[i], "-time") == 0) {
                         if (!(i + 1 < argc)) {      /* no time file */
                                 usage(argv[0]);
