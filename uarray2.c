@@ -97,6 +97,7 @@ void UArray2_map_row_major(T array2, void apply(int i, int j, T array2,
                 /* don't want row/UArray_at in inner loop */
                 UArray_T thisrow = row(array2, j); 
                 for (int i = 0; i < w; i++) {   
+                        // fprintf(stderr, "[%d][%d]\n", i, j);
                         apply(i, j, array2, UArray_at(thisrow, i), cl);
                 }
         }
