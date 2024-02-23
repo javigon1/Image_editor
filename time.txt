@@ -1,0 +1,13 @@
+Rotation: 90, Time: 424128805 nanoseconds
+Rotation: 90
+ Mapping: -col-major
+ Time: 397853858 nanoseconds
+Rotation: 90
+Mapping: -col-major
+Time: 398622522 nanoseconds
+Rotation: 90
+Mapping: -col-major
+Time: 394200153 nanoseconds
+Rotation: 90 degrees
+Mapping: column major
+Time: 395181462 nanoseconds

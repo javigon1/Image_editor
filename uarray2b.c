@@ -116,7 +116,8 @@ int UArray2b_blocksize(T array2b)
 void *UArray2b_at(T array2b, int column, int row)
 {
         assert(array2b != NULL);
-        assert(column >= 0 && column < array2b->width && row >= 0 && row < array2b->height);
+        assert(column >= 0 && column < array2b->width && row >= 0 && 
+                                                         row < array2b->height);
 
         int blocksize = array2b->blocksize;
 
@@ -147,8 +148,11 @@ void UArray2b_map(T array2b, void apply(int col, int row, T array2b, void *elem,
                                 for (int j = 0; j < blocksize; j++) {
                                         int col = block_col * blocksize + j;
                                         int row = block_row * blocksize + i;
-                                        if (col < array2b->width && row < array2b->height) {
-                                                apply(col, row, array2b, UArray2b_at(array2b, col, row), cl);
+                                        if (col < array2b->width && 
+                                            row < array2b->height) {
+                                                apply(col, row, array2b, 
+                                                UArray2b_at(array2b, col, row),
+                                                cl);
                                         }
                                 }
                         }

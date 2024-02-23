@@ -18,7 +18,6 @@ main(int argc, char *argv[])
 
         timer = CPUTime_New();
 
-
         for (outerct = 0; outerct < outerlooptimes; outerct++) {
                 sum = 0.0;
                 CPUTime_Start(timer);
