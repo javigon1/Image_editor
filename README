@@ -1,0 +1,64 @@
+1.  jgonza20 and cli31
+2.  TA from lab and OH
+3.  UArray2b.c
+    a2plain.c (build on the preliminary version provided)
+    ppmtrans.c (starts from control flow until print to files/std)
+        No required files not correctly implemented.
+4. 
+Data structures:
+    UArray2b will be represented as a 2D array whose elements are blocks, and 
+    each block is represented by a single Uarray. The index of elements in the
+    Uarray will be coded so it corresponds to the index in UArray2b used for 
+    clients.
+
+Architectures and Worklog
+i.  Set up files need to implement and make sure everything compiles correctly
+    Code the implementation of uarray2b.h (refer to uarray2.c provided in hw2 
+    solution)
+    Encounter a difficulty: how to avoid using four nested for loop in block
+    mapping function. Discussed of calling the mapping func of uarray2 and
+    call the mapping func of uarray with a helper apply func. But failed
+    because the type of parameter cannot fit. Still use a 4-ly nested for loop.
+    Test each method in the interface with a self made test.c file contains main
+    function to make sure it works
+    Generally test with provided a2test.c until pass was successfully printed
+    Run a2block.c to make sure the uarray2b struct can be successfully applied 
+    on it.
+ii. Code the implementation for a2plain.c (refer to a2block.c). Set default
+    mapping to row major mapping because as discussed in part E it is faster
+iii.figure out algorithms for 4 rotations:
+    0 rotation: [col, row] unchanged
+    90 rotation: [height - row - 1, col] avoid out of range
+    180 rotation: [width - col - 1, height - row - 1]
+    figure out how to deal with rotate animage that is not a square 
+    -> create a new UArray2_T of pixels with new width and height to store the 
+    rotated pixels. Assign it back to the original image after transformation 
+    completed.
+    For each major mapping (row/col/block), the apply func is the same because
+    it is only responsible for the rotation of single pixel.
+    Handle extra functions of flip and transpose (similarly)
+ix. Now the control flow was settled. Go to IO part (actually can code io prior
+    to control flow bc it is easier to test)
+    Use Pnm_ppm Pnm_ppmread to read the given image into given struct
+    Create a new UArray2_T (width and height depends on transformation) to take
+    over the rotated pixels and assign it back.
+    Update the width /height of given image
+    Send to print IO
+    Free the original pixel and the new pixel array2
+x.  Timer part: define variables used for timing as in timing_test.c
+    start timing right before the control flow of transformation; end timing
+    right after it.
+    Write a properly formatted print out to file function. We created a new
+    struct to take over all the information we need to analyze.
+
+Tests:
+i.  djpeg commend line given in the spec. Use Wind-the-cave image. Try 7
+    transformations and run with valgrind. All passed.
+ii. a single line/ array with extreme difference between width and height. Set
+    default to block mapping. Try 7 trnasformations and run with valgrind. All
+    passed.
+iii.the mono.ppm file provided in /large folder. We are unable to open it either
+    use extension in VSCode or use Xming. Fail to check
+
+5. PART E
+TODO:
