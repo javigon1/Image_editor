@@ -64,22 +64,32 @@ iii.the mono.ppm file provided in /large folder. We are unable to open it either
 Picture to time: from-wind-cave
 Info: width 2867 height 1603. Total pixels: 4595801
 
+cpu MHz		: 2194.844
+cache size	: 16896 KB
+cache line size	: 64 B
+model name	: Intel(R) Xeon(R) Silver 4214Y CPU @ 2.20GHz
+
 Transformation      Mapping          Total time(ns)         Time per pixel
 -rotation 0        row-major           229765536                 50
 -rotation 90       row-major           394298361                 86
 -rotation 180      row-major           231639753                 51
 -rotation 270      row-major           388042639                 85
 -transpose         row-major           382345451                 84
+-flip horizontal   row-major           204717080                 45
+-flip vertical     row-major           202153664                 44
 
 -rotation 0        column-major        539808932                 118
 -rotation 90       column-major        400997118                 88
 -rotation 180      column-major        552386490                 121
 -rotation 270      column-major        400242111                 87
 -transpose         column-major        406502224                 89
+-flip horizontal   column-major        513943950                 112      
+-flip vertical     column-major        478656299                 105
 
 -rotation 0        block-major         457731282                 100
 -rotation 90       block-major         526230353                 115
 -rotation 180      block-major         460117288                 101
 -rotation 270      block-major         466608534                 102
 -transpose         block-major         458736684                 100
-
+-flip horizontal   block-major         459268966                 100
+-flip vertical     block-major         443530304                 97
