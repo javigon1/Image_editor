@@ -63,7 +63,8 @@ int main(int argc, char *argv[])
         bool  horizontal     = false;
         bool  vertical       = false;
         bool  transpose      = false;
-        // char  *mapping       = NULL;
+        char  *mapping       = "row-major";
+        bool  rotation_given = false;
 
         /* default to UArray2 methods */
         A2Methods_T methods = uarray2_methods_plain; 
@@ -77,15 +78,15 @@ int main(int argc, char *argv[])
                 if (strcmp(argv[i], "-row-major") == 0) {
                         SET_METHODS(uarray2_methods_plain, map_row_major, 
                                     "row-major");
-                                //     mapping = "row major";
+                                    mapping = "row major";
                 } else if (strcmp(argv[i], "-col-major") == 0) {
                         SET_METHODS(uarray2_methods_plain, map_col_major, 
                                     "column-major");
-                                //     mapping = "column major";
+                                    mapping = "column major";
                 } else if (strcmp(argv[i], "-block-major") == 0) {
                         SET_METHODS(uarray2_methods_blocked, map_block_major,
                                     "block-major");
-                                //     mapping = "block major";
+                                    mapping = "block major";
                 } else if (strcmp(argv[i], "-rotate") == 0) {
                         if (!(i + 1 < argc)) {      /* no rotate value */
                                 usage(argv[0]);
@@ -97,6 +98,9 @@ int main(int argc, char *argv[])
                                 fprintf(stderr, 
                                         "Rotation must be 0, 90 180 or 270\n");
                                 usage(argv[0]);
+                        }
+                        if (rotation == 0) {
+                                rotation_given = true;
                         }
                         if (!(*endptr == '\0')) {    /* Not a number */
                                 usage(argv[0]);
@@ -159,12 +163,12 @@ int main(int argc, char *argv[])
         A2Methods_UArray2 new_image;
 
         // declarations used for counting time
-        // CPUTime_T timer = CPUTime_New();
+        CPUTime_T timer = CPUTime_New();
 
-        // // only timing rotations (operations)
-        // CPUTime_Start(timer);
+        // only timing rotations (operations)
+        CPUTime_Start(timer);
 
-        if (rotation == 0) {
+        if (rotation == 0 && rotation_given) {
                 new_image = methods->new(methods->width(orig_image), 
                                          methods->height(orig_image),
                                          sizeof(struct Pnm_rgb));
@@ -196,13 +200,17 @@ int main(int argc, char *argv[])
                                          sizeof(struct Pnm_rgb));
                 struct closure infoGet = {methods, new_image};
                 map(orig_image->pixels, flipHorizontal, &infoGet);
-        } else if (vertical) {
+        } 
+
+        if (vertical) {
                 new_image = methods->new(methods->width(orig_image), 
                                          methods->height(orig_image),
                                          sizeof(struct Pnm_rgb));
                 struct closure infoGet = {methods, new_image};
                 map(orig_image->pixels, flipVertical, &infoGet);
-        } else if (transpose) {
+        } 
+        
+        if (transpose) {
                 new_image = methods->new(methods->height(orig_image), 
                                          methods->width(orig_image),
                                          sizeof(struct Pnm_rgb));
@@ -210,27 +218,27 @@ int main(int argc, char *argv[])
                 map(orig_image->pixels, doTranspose, &infoGet);
         }
 
-        // if (time_file_name != NULL) {
-        //         char *transformation = (horizontal) ? "horizontal" : "NO" ;
-        //         transformation = (vertical) ? "vertical" : "NO" ;
-        //         transformation = (transpose) ? "transpose" : "NO" ;
-        //         struct imageInfo image_info = { rotation, 
-        //                                         methods->width(orig_image),
-        //                                         methods->height(orig_image),
-        //                                         argv[argc - 1], 
-        //                                         mapping, transformation };
-        //         double time_used = CPUTime_Stop(timer);
-        //         writeTimer(time_used, time_file_name, image_info);
-        // }
+        double time_used = CPUTime_Stop(timer);
+
+        if (time_file_name != NULL) {
+                char *transformation = (horizontal) ? "horizontal" : "NO" ;
+                transformation = (vertical) ? "vertical" : "NO" ;
+                transformation = (transpose) ? "transpose" : "NO" ;
+                struct imageInfo image_info = { rotation, 
+                                                methods->width(orig_image),
+                                                methods->height(orig_image),
+                                                argv[argc - 1], 
+                                                mapping, transformation };
+                writeTimer(time_used, time_file_name, image_info);
+        }
         
 
-        // CPUTime_Free(&timer);
+        CPUTime_Free(&timer);
 
         methods->free(&orig_image->pixels);
         orig_image->width = methods->width(new_image);
         orig_image->height = methods->height(new_image);
         orig_image->pixels = new_image;
-        methods->free(&new_image);
 
         Pnm_ppmwrite(stdout, orig_image);
         Pnm_ppmfree(&orig_image);
@@ -365,8 +373,8 @@ void writeTimer(double time_used, char *time_file_name,
         // Write the timing information to the file
         // may improve by including more image info
         fprintf(time_file, "FILE: %s\nImage contains a width of %d pixels and a"
-                "height of %d pixels\nRotation: %d\nTransformation: %s\n"
-                "Mapping: %s \nTime take: %0.f nanoseconds\nTime take on each"
+                " height of %d pixels\nRotation: %d degree\nTransformation: %s\n"
+                "Mapping: %s \nTime taken: %0.f nanoseconds\nTime taken on each"
                 " pixel: %0.f nanoseconds\n", image_info.image_name, 
                 image_info.width, image_info.height, image_info.rotation, 
                 image_info.transformation, image_info.mapping, time_used, 

@@ -1,0 +1,14 @@
+FILE: timeInfo
+Image contains a width of 2856 pixels and aheight of 1603 pixels
+Rotation: 0
+Transformation: NO
+Mapping: (null) 
+Time take: 198740309 nanoseconds
+Time take on each pixel: 43 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and aheight of 1603 pixels
+Rotation: 0
+Transformation: NO
+Mapping: row-major 
+Time take: 201297735 nanoseconds
+Time take on each pixel: 44 nanoseconds
