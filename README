@@ -52,7 +52,7 @@ x.  Timer part: define variables used for timing as in timing_test.c
     struct to take over all the information we need to analyze.
 
 Tests:
-i.  djpeg commend line given in the spec. Use Wind-the-cave image. Try 7
+i.  djpeg commend line given in the spec. Use from-wind-cave image. Try 7
     transformations and run with valgrind. All passed.
 ii. a single line/ array with extreme difference between width and height. Set
     default to block mapping. Try 7 trnasformations and run with valgrind. All
@@ -61,4 +61,25 @@ iii.the mono.ppm file provided in /large folder. We are unable to open it either
     use extension in VSCode or use Xming. Fail to check
 
 5. PART E
-TODO:
+Picture to time: from-wind-cave
+Info: width 2867 height 1603. Total pixels: 4595801
+
+Transformation      Mapping          Total time(ns)         Time per pixel
+-rotation 0        row-major           229765536                 50
+-rotation 90       row-major           394298361                 86
+-rotation 180      row-major           231639753                 51
+-rotation 270      row-major           388042639                 85
+-transpose         row-major           382345451                 84
+
+-rotation 0        column-major        539808932                 118
+-rotation 90       column-major        400997118                 88
+-rotation 180      column-major        552386490                 121
+-rotation 270      column-major        400242111                 87
+-transpose         column-major        406502224                 89
+
+-rotation 0        block-major         457731282                 100
+-rotation 90       block-major         526230353                 115
+-rotation 180      block-major         460117288                 101
+-rotation 270      block-major         466608534                 102
+-transpose         block-major         458736684                 100
+
