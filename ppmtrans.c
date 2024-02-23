@@ -7,6 +7,7 @@
 #include "a2methods.h"
 #include "a2plain.h"
 #include "a2blocked.h"
+#include "cputiming.h"
 #include "pnm.h"
 
 #define SET_METHODS(METHODS, MAP, WHAT) do {                    \
@@ -29,6 +30,7 @@ void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void flipVertical(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void outputResults();
 
 static void usage(const char *progname)
 {
@@ -288,4 +290,19 @@ void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         Pnm_rgb array_pixel = elem;
         Pnm_rgb rotated_pixel = info->methods->at(info->array2, j, i);
         *rotated_pixel = *array_pixel;
+}
+
+
+void outputResults(char* filename)
+{
+        FILE *outputFile;
+        outputFile = fopen(filename, "w");
+                if (!outputFile) {
+                        fprintf(stderr, 
+                                "Error: Cannot open file '%s' for reading.\n", 
+                                argv[argc - 1]);
+                        exit(EXIT_FAILURE);
+                }
+
+
 }
