@@ -31,6 +31,7 @@ void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl
 void flipVertical(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void outputResults();
+void writeTimer(double time_used, char *time_file_name, int rotation);
 
 static void usage(const char *progname)
 {
@@ -54,11 +55,11 @@ int main(int argc, char *argv[])
         int   rotation       = 0;
         int   i;
         bool  file_given     = false;
+
         bool  horizontal     = false;
         bool  vertical       = false;
         bool  transpose      = false;
 
-        (void)time_file_name;
 
         /* default to UArray2 methods */
         A2Methods_T methods = uarray2_methods_plain; 
@@ -145,6 +146,12 @@ int main(int argc, char *argv[])
 
         A2Methods_UArray2 new_image;
 
+        // declarations used for counting time
+        CPUTime_T timer = CPUTime_New();
+        double time_used;
+
+        // only timing rotations (operations)
+        CPUTime_Start(timer);
         if (rotation == 0) {
                 new_image = methods->new(methods->width(orig_image), 
                                          methods->height(orig_image),
@@ -190,6 +197,7 @@ int main(int argc, char *argv[])
                 struct closure infoGet = {methods, new_image};
                 map(orig_image->pixels, doTranspose, &infoGet);
         }
+        time_used = CPUTime_Stop(timer);
 
         methods->free(&orig_image->pixels);
         orig_image->width = methods->width(new_image);
@@ -305,4 +313,21 @@ void outputResults(char* filename)
                 }
 
 
+}
+
+void writeTimer(double time_used, char *time_file_name, int rotation) {
+        FILE *time_file = fopen(time_file_name, "a"); // opened in append mode
+
+        if (time_file == NULL) {
+                fprintf(stderr, "Error opening file: %s\n", time_file_name);
+                return;
+        }
+    
+        // Write the timing information to the file
+        // may improve by including more image info
+        fprintf(time_file, "Rotation: %d, Time: %.0f nanoseconds\n", 
+                           rotation, time_used);
+        
+        // Close the file
+        fclose(time_file);
 }
