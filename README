@@ -93,3 +93,58 @@ Transformation      Mapping          Total time(ns)         Time per pixel
 -transpose         block-major         458736684                 100
 -flip horizontal   block-major         459268966                 100
 -flip vertical     block-major         443530304                 97
+
+Observe the data table, we can find 4 patterns:
+1. row-major has generally the best performance compared to column-major and
+block-major;
+2. In row-major mapping, rotation 90, 270, and transpose is significantly slower
+than rotation 0, 180, and flip horizontal, vertical
+3. In col-major mapping, it is the opposite to pattern 2 in row-major mapping.
+4. All the transformation in block-major mapping have generally the same
+performace
+
+For pattern 1, the design submission already explained why row-major is the best
+performace. Please refer to the design.pdf
+
+To explain pattern 2, we must first understand what does each element 
+(pixel) do in the array in individual apply function. For example, in rotation
+0, in this line of code:
+Pnm_rgb rotated_pixel = info->methods->at(info->array2, i, j);
+CPU would call the element ptr and the ptr to its destination in the new array2.
+When putting both the elem and destination into cache, the cache line would also
+take the next 4 entries after them. (cache line size = 64 bytes, each pixel has
+3*4 = 12 bytes, each cache line can take 5 complete pixels)
+So when the mapping function keeps going, CPU would find the next 4 pixel and 
+methods->at in cache, which means a cache hit. It will proceed to 4 more hits
+until a new pixel to be read in cache line 
+However, in rotation 90, the rotation code is:
+Pnm_rgb rotated_pixel = info->methods->at(info->array2, height - j - 1, i);
+int i would increment every time the apply func was called in row-major, so
+while the pixel was read one after another the same way as rotate 0, the
+destination would move column-wise, which means incontigously in memory. For
+the first line, every time methods->at was called it is a miss, which would
+result in worse performance.
+In short, when the transformation involves move pixel to its destination 
+column-wise,the performace would be worse because one of the two data retrive
+would have more cache line miss. Therefore, rotation 90, 270, and transpose is 
+significantly slower than rotation 0, 180, and flip horizontal, vertical
+
+To explain pattern 3, it is because when reading pixels column-wise, it will
+cause the original pixel reading column-wise (the same as how rotation 90 was
+explained in pattern 2) and methods->at as well. Therefore technically it is
+double the worse performace than the likes of rotation 90 in pattern 2. And when
+it comes to rotation 90s, we can see that the methods->at was calling pixels
+horizontally again (you may envision it as double rotate 90 to make a 180), so
+it has one good performace operation and one bad.
+Even data can be used to prove the pattern, two good performace operation use 
+about 50 ns on each pixel, one good one bad use about 85 (50 + 35) ns, and 
+two bad operation use about 120 (50 + 35 * 2) ns.
+
+To explain pattern 4, we must understand that the mapping function iterate
+through each block first, and block was represented as Uarray, which is always
+contigous in memory. Therefore retrieving pixel vertically or horizontally will
+not affect the performace. When we call by default like this test, the block
+size was set large enough to take more than one cache line, which means every
+block are incontigous in memory. It would end up a neither good nor bad
+performace, as we see in data, the time took for each block-major operation is
+better than the two worse operations but worse than the two bad operations.
