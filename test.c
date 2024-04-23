@@ -14,7 +14,7 @@ void populate_element(int col, int row, UArray2b_T array2b, void *elem, void *cl
 
 int main()
 {
-        UArray2b_T array2b = UArray2b_new(10, 10, sizeof(int), 4);
+        UArray2b_T array2b = UArray2b_new(0, 10, sizeof(int), 4);
         populate(array2b);
         int count = 0;
         UArray2b_map(array2b, print_element, &count);

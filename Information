@@ -1,0 +1,147 @@
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 229765536 nanoseconds
+Time taken on each pixel: 50 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 90 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 394298361 nanoseconds
+Time taken on each pixel: 86 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 180 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 231639753 nanoseconds
+Time taken on each pixel: 51 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 270 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 388042639 nanoseconds
+Time taken on each pixel: 85 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 203898043 nanoseconds
+Time taken on each pixel: 45 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 202815573 nanoseconds
+Time taken on each pixel: 44 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: transpose
+Mapping: row-major 
+Time taken: 382345451 nanoseconds
+Time taken on each pixel: 84 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: column major 
+Time taken: 539808932 nanoseconds
+Time taken on each pixel: 118 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 90 degree
+Transformation: NO
+Mapping: column major 
+Time taken: 400997118 nanoseconds
+Time taken on each pixel: 88 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 180 degree
+Transformation: NO
+Mapping: column major 
+Time taken: 552386490 nanoseconds
+Time taken on each pixel: 121 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 270 degree
+Transformation: NO
+Mapping: column major 
+Time taken: 400242111 nanoseconds
+Time taken on each pixel: 87 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: column major 
+Time taken: 505250102 nanoseconds
+Time taken on each pixel: 110 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: column major 
+Time taken: 486572025 nanoseconds
+Time taken on each pixel: 106 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: transpose
+Mapping: column major 
+Time taken: 406502224 nanoseconds
+Time taken on each pixel: 89 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 457731282 nanoseconds
+Time taken on each pixel: 100 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 90 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 526230353 nanoseconds
+Time taken on each pixel: 115 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 180 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 460117288 nanoseconds
+Time taken on each pixel: 101 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 270 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 466608534 nanoseconds
+Time taken on each pixel: 102 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 443254158 nanoseconds
+Time taken on each pixel: 97 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 432762717 nanoseconds
+Time taken on each pixel: 95 nanoseconds
+FILE: Information
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: transpose
+Mapping: block major 
+Time taken: 458736684 nanoseconds
+Time taken on each pixel: 100 nanoseconds

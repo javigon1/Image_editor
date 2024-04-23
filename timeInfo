@@ -12,3 +12,73 @@ Transformation: NO
 Mapping: row-major 
 Time take: 201297735 nanoseconds
 Time take on each pixel: 44 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 4717155528 nanoseconds
+Time taken on each pixel: 1030 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 180 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 233098806 nanoseconds
+Time taken on each pixel: 51 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: transpose
+Mapping: row-major 
+Time taken: 174509778 nanoseconds
+Time taken on each pixel: 38 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 174460645 nanoseconds
+Time taken on each pixel: 38 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 204397175 nanoseconds
+Time taken on each pixel: 45 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: transpose
+Mapping: row-major 
+Time taken: 316067593 nanoseconds
+Time taken on each pixel: 69 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: transpose
+Mapping: row-major 
+Time taken: 375653427 nanoseconds
+Time taken on each pixel: 82 nanoseconds
+FILE: timeInfo
+Image contains a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 207140173 nanoseconds
+Time taken on each pixel: 45 nanoseconds
+FILE: timeInfo
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 231610403 nanoseconds
+Time taken on each pixel: 51 nanoseconds
+FILE: timeInfo
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: row-major 
+Time taken: 236436454 nanoseconds
+Time taken on each pixel: 52 nanoseconds

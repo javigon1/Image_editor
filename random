@@ -1,0 +1,49 @@
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: NO
+Mapping: block major 
+Time taken: 451821148 nanoseconds
+Time taken on each pixel: 99 nanoseconds
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: horizontal
+Mapping: block major 
+Time taken: 459268966 nanoseconds
+Time taken on each pixel: 100 nanoseconds
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: horizontal
+Mapping: row major 
+Time taken: 204717080 nanoseconds
+Time taken on each pixel: 45 nanoseconds
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: horizontal
+Mapping: column major 
+Time taken: 513943950 nanoseconds
+Time taken on each pixel: 112 nanoseconds
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: vertical
+Mapping: row major 
+Time taken: 202153664 nanoseconds
+Time taken on each pixel: 44 nanoseconds
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: vertical
+Mapping: column major 
+Time taken: 478656299 nanoseconds
+Time taken on each pixel: 105 nanoseconds
+FILE: random
+Image has a width of 2856 pixels and a height of 1603 pixels
+Rotation: 0 degree
+Transformation: vertical
+Mapping: block major 
+Time taken: 443530304 nanoseconds
+Time taken on each pixel: 97 nanoseconds
