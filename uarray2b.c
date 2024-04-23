@@ -8,6 +8,21 @@
  *     its slots. The way this is done is by dividing the array2b into blocks
  *     so that we can then perfom the mapping in block-major mapping, which 
  *     allowing simulates how by block major mapping we can feed whole chunks
+ *     of contigous information to the cache. We provide ways to change, access, 
+ *     and view what is being stored in the uarray2.
+ *    
+ */
+
+/*
+ *     uarray2b.c
+ *     Javier Gonzalez (jgonza20) and Cheng Li (cli01)
+ *     2/23/24
+ *     Locality
+ *
+ *     uarray2b represents a two dimensional array that can store elements in 
+ *     its slots. The way this is done is by dividing the array2b into blocks
+ *     so that we can then perfom the mapping in block-major mapping, which 
+ *     allowing simulates how by block major mapping we can feed whole chunks
  *     of contigous information to the cache. We provide ways to change, 
  *     access, and view what is being stored in the uarray2.
  *    
@@ -25,16 +40,38 @@
 #define T UArray2b_T
 
 /* Struct definition for UArray2b */
+/* Struct definition for UArray2b */
 struct T {
     int width;
     int height;
     int size;
     int blocksize;
     /* each block is represented by a uarray */
+    /* each block is represented by a uarray */
     UArray2_T blocks;
 };
 
 
+/*
+ * Name: UArray2b_new
+ * 
+ * Description: Creates a new UArray2b structure with the specified width, height,
+ * size, and blocksize. Allocates memory for the blocks array and initializes each
+ * block with a new UArray_T.
+ *
+ * Parameters:
+ *           int width: the width of the UArray2b
+ *           int height: the height of the UArray2b
+ *           int size: the size of each element in the UArray2b
+ *           int blocksize: the size of each block in the UArray2b
+ *        
+ * Returns: the UArray2b_T we created 
+ * 
+ * Expects: valid dimensions to create a correc UArray2b
+ * 
+ * Notes: results in checked runtime errors for any of the dimensions being 
+ * non positive or 0
+ */
 /*
  * Name: UArray2b_new
  * 
@@ -76,8 +113,7 @@ T UArray2b_new (int width, int height, int size, int blocksize)
         int block_height = (height + blocksize - 1) / blocksize;
 
         /* create a UArray2 of blocks */
-        array2b->blocks = UArray2_new(block_width, block_height, 
-                                      sizeof(UArray_T));
+        array2b->blocks = UArray2_new(block_width, block_height, sizeof(UArray_T));
         assert(array2b->blocks != NULL);
 
         /* for each element in the previous UArray2 create a UArray that 
@@ -96,9 +132,9 @@ T UArray2b_new (int width, int height, int size, int blocksize)
 /*
  * Name: UArray2b_new_64K_block
  * 
- * Description: Creates a new UArray2b structure with the specified width, 
- * height, and size, using a blocksize that maximizes the block size to fit 
- * within a 64K memory limit.
+ * Description: Creates a new UArray2b structure with the specified width, height,
+ * and size, using a blocksize that maximizes the block size to fit within a 64K
+ * memory limit.
  *
  * Parameters:
  *           int width: the width of the UArray2b
@@ -257,8 +293,8 @@ int UArray2b_blocksize(T array2b)
 /*
  * Name: UArray2b_at
  * 
- * Description: Returns a pointer to the element at the specified column and 
- * row in the UArray2b.
+ * Description: Returns a pointer to the element at the specified column and row
+ * in the UArray2b.
  *
  * Parameters:
  *           T array2b: the UArray2b structure
@@ -296,26 +332,25 @@ void *UArray2b_at(T array2b, int column, int row)
 /*
  * Name: UArray2b_map
  * 
- * Description: Applies the provided apply function to each element in the 
- * UArray2b, iterating in row-major order. The apply function takes as 
- * arguments the column index, row index, the UArray2b, a pointer to the 
- * element, and a closure pointer.
+ * Description: Applies the provided apply function to each element in the UArray2b,
+ * iterating in row-major order. The apply function takes as arguments the column
+ * index, row index, the UArray2b, a pointer to the element, and a closure pointer.
  *
  * Parameters:
  *           T array2b: the UArray2b structure
- *           void apply(int col, int row, T array2b, void *elem, void *cl): the 
- *           apply function to be applied to each element
+ *           void apply(int col, int row, T array2b, void *elem, void *cl): the apply
+ *               function to be applied to each element
  *           void *cl: a closure pointer
  *        
  * Returns: None
  * 
  * Expects: array2b != NULL, apply != NULL
  * 
- * Notes: The apply function is responsible for any modifications to the 
- * elements in the UArray2b.
+ * Notes: The apply function is responsible for any modifications to the elements
+ * in the UArray2b.
  */
-void UArray2b_map(T array2b, void apply(int col, int row, T array2b, 
-                  void *elem, void *cl), void *cl)
+void UArray2b_map(T array2b, void apply(int col, int row, T array2b, void *elem,
+                  void *cl), void *cl)
 {
         assert(array2b != NULL);
         assert(apply != NULL);

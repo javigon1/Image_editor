@@ -38,17 +38,20 @@
 } while (false)
 
 /* struct to allow us to access the second picture and A2 methods */
+/* struct to allow us to access the second picture and A2 methods */
 struct closure {
         A2Methods_T methods;
         A2Methods_UArray2 array2;
 };
 
 /* struct to store information about the image */
+/* struct to store information about the image */
 struct imageInfo {
         int rotation, width, height;
         char *image_name, *mapping, *transformation;
 };
 
+/* function declarations */
 /* function declarations */
 void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void rotate90(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
@@ -61,6 +64,7 @@ void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
 void writeTimer(double time_used, char *time_file_name, struct imageInfo);
 
 /* Usage function */
+/* Usage function */
 static void usage(const char *progname)
 {
         fprintf(stderr, "Usage: %s [-rotate <angle>] "
@@ -72,6 +76,32 @@ static void usage(const char *progname)
 }
 
 
+/*
+ * Name: main
+ * 
+ * Description: Main body of the program. Checks command-line arguments to 
+ * determine the image transformation operations to be performed, the type of
+ * mapping to be used, and the optional timing file name. Reads the input image
+ * file, applies the specified transformations using the provided mapping, 
+ * records the timing information if specified, and writes the output image to
+ * stdout.
+ *
+ * Parameters:
+ *           int argc: the number of command-line arguments
+ *           char *argv[]: an array of command-line argument strings
+ *        
+ * Returns: int. EXIT_SUCCESS if the program completes successfully,
+ * non-zero otherwise
+ * 
+ * Expects: valid command-line arguments and input image file
+ * 
+ * Notes: Exits with a status code of 1 if there are too many arguments, an 
+ * unknown option is provided, or an error occurs while opening or reading the
+ * input image file. Uses apply functions (rotate0, rotate90, etc.) to perform 
+ * image transformations based on the specified rotation angle, flip direction,
+ * or transpose operation. Uses the specified mapping (row-major, column-major,
+ * or block-major) to create the new image in the desired format.
+ */
 /*
  * Name: main
  * 
@@ -330,7 +360,7 @@ void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         /* check for the bounds passed as parameters */
         assert(i >= 0 && j >= 0);
         (void)array2;
-        /* create instance of the struct to be able to access its information*/
+        /* create instance of the struct to be able to access its information */
         struct closure *info = cl;
         int height = info->methods->height(array2);
         int width = info->methods->width(array2);
@@ -338,7 +368,7 @@ void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         /* check for the mapping coordinates to be inside of bounds */
         if (i < 0 || i >= width || j < 0 || j >= height) {
                 fprintf(stderr, 
-                       "Error: Invalid pixel coordinates (%d, %d)->(%d, %d)\n",
+                        "Error: Invalid pixel coordinates (%d, %d)->(%d, %d)\n",
                         i, j, height - j - 1, i);
                 exit(EXIT_FAILURE);
         }
@@ -348,8 +378,8 @@ void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         /* position where we want to store the element in the tranformed 
         image */
         Pnm_rgb rotated_pixel = info->methods->at(info->array2, i, j);
-        /* assign the element read to the respective position in the 
-        transformed image */
+        /* assign the element read to the respective position in the transformed
+        image */
         *rotated_pixel = *array_pixel;
 }       
 
@@ -365,8 +395,8 @@ void rotate0(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
  *           int i: the column position the elem is at
  *           int j: the row position the elem is at
  *           A2Methods_UArray2 array2: the UArray containing the image
- *           void *elem: the element at the previously mentioned location in 
- *           the uarray containing the image
+ *           void *elem: the element at the previously mentioned location in the
+ *           uarray containing the image
  *           void *cl: the struct containing the methods and the second UArray2
  *           we need to create the new image (rotated version)
  *        
@@ -446,16 +476,16 @@ void rotate180(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
 /*
  * Name: rotate270
  * 
- * Description: rotates the given UArray2 by 270 degrees. This is called in  
- * main as an apply function, which means that it maps each element it is 
- * called on (each pixel) to the respective position in the rotated image
+ * Description: rotates the given UArray2 by 270 degrees. This is called in main 
+ * as an apply function, which means that it maps each element it is called on
+ * (each pixel) to the respective position in the rotated image
  *
  * Parameters:
  *           int i: the column position the elem is at
  *           int j: the row position the elem is at
  *           A2Methods_UArray2 array2: the UArray containing the image
- *           void *elem: the element at the previously mentioned location in 
- *           the uarray containing the image
+ *           void *elem: the element at the previously mentioned location in the
+ *           uarray containing the image
  *           void *cl: the struct containing the methods and the second UArray2
  *           we need to create the new image (rotated version)
  *        
@@ -499,10 +529,10 @@ void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
  *           int i: the column position the elem is at
  *           int j: the row position the elem is at
  *           A2Methods_UArray2 array2: the UArray containing the image
- *           void *elem: the element at the previously mentioned location in 
- *           the uarray containing the image void *cl: the struct containing 
- *           the methods and the second UArray2 we need to create the new image
- *           (flipped version)
+ *           void *elem: the element at the previously mentioned location in the
+ *           uarray containing the image
+ *           void *cl: the struct containing the methods and the second UArray2
+ *           we need to create the new image (flipped version)
  *        
  * Returns: nothing
  * 
@@ -511,8 +541,7 @@ void rotate270(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
  * Notes: results in checked runtime error if: the column pos is a non-positive 
  * value or the row is a non-positive value 
  */
-void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem, 
-                    void *cl)
+void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
 {
         assert(i >= 0 && j >= 0);
         struct closure *info = cl;
@@ -521,7 +550,7 @@ void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem,
         if (width - i - 1 < 0 || width - i - 1 >= width || 
             j < 0 || j >= width) {
                 fprintf(stderr, 
-                       "Error: Invalid pixel coordinates (%d, %d)->(%d, %d)\n",
+                        "Error: Invalid pixel coordinates (%d, %d)->(%d, %d)\n",
                         i, j, width - i - 1, j);
                 exit(EXIT_FAILURE);
         }
@@ -544,8 +573,8 @@ void flipHorizontal(int i, int j, A2Methods_UArray2 array2, void *elem,
  *           int i: the column position the elem is at
  *           int j: the row position the elem is at
  *           A2Methods_UArray2 array2: the UArray containing the image
- *           void *elem: the element at the previously mentioned location in 
- *           the uarray containing the image
+ *           void *elem: the element at the previously mentioned location in the
+ *           uarray containing the image
  *           void *cl: the struct containing the methods and the second UArray2
  *           we need to create the new image (flipped version)
  *        
@@ -561,6 +590,14 @@ void flipVertical(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
         assert(i >= 0 && j >= 0);
         struct closure *info = cl;
         int height = info->methods->height(array2);
+
+        // if (i < 0 || i >= height || height - j - 1 < 0 || 
+        //                             height - j - 1 >= height) {
+        //         fprintf(stderr, 
+        //                 "Error: Invalid pixel coordinates (%d, %d)->(%d, %d)\n",
+        //                 i, j, i, height - j - 1);
+        //         exit(EXIT_FAILURE);
+        // }
 
         Pnm_rgb array_pixel = elem;
         Pnm_rgb rotated_pixel = info->methods->at(info->array2, i,
@@ -580,8 +617,8 @@ void flipVertical(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
  *           int i: the column position the elem is at
  *           int j: the row position the elem is at
  *           A2Methods_UArray2 array2: the UArray containing the image
- *           void *elem: the element at the previously mentioned location in 
- *           the uarray containing the image
+ *           void *elem: the element at the previously mentioned location in the
+ *           uarray containing the image
  *           void *cl: the struct containing the methods and the second UArray2
  *           we need to create the new image (transposed version)
  *        
@@ -620,17 +657,14 @@ void doTranspose(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl)
  *
  * Parameters:
  *           double time_used: the total time taken for the operation
- *           char *time_file_name: the name of the file to write the timing 
- *           information to
- *           struct imageInfo image_info: a struct containing information about
- *           the image
+ *           char *time_file_name: the name of the file to write the timing information to
+ *           struct imageInfo image_info: a struct containing information about the image
  *        
  * Returns: nothing
  * 
  * Expects: valid file name and image information
  * 
- * Notes: results in a checked runtime error if the file cannot be opened for
- * writing
+ * Notes: results in a checked runtime error if the file cannot be opened for writing
  */
 void writeTimer(double time_used, char *time_file_name, 
                 struct imageInfo image_info)

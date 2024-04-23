@@ -19,15 +19,13 @@
 typedef A2Methods_UArray2 A2;
 
 
-/* Allocate and return a new A2Methods_UArray2 with the given width, height, 
-and size */
+/* Allocate and return a new A2Methods_UArray2 with the given width, height, and size */
 static A2Methods_UArray2 new(int width, int height, int size)
 {
         return UArray2_new(width, height, size);
 }
 
-/* Allocate and return a new A2Methods_UArray2 with the given width, height, 
-size, and blocksize */
+/* Allocate and return a new A2Methods_UArray2 with the given width, height, size, and blocksize */
 static A2Methods_UArray2 new_with_blocksize(int width, int height, int size,
                                             int blocksize)
 {
@@ -37,12 +35,14 @@ static A2Methods_UArray2 new_with_blocksize(int width, int height, int size,
 
 
 /* Free the memory allocated for the A2Methods_UArray2 pointed to by array2p */
+/* Free the memory allocated for the A2Methods_UArray2 pointed to by array2p */
 static void a2free(A2 * array2p)
 {
         UArray2_free((UArray2_T *) array2p);
 }
 
 
+/* Return the width of the A2Methods_UArray2 array2 */
 /* Return the width of the A2Methods_UArray2 array2 */
 static int width(A2 array2)
 {
@@ -51,6 +51,7 @@ static int width(A2 array2)
 
 
 /* Return the height of the A2Methods_UArray2 array2 */
+/* Return the height of the A2Methods_UArray2 array2 */
 static int height(A2 array2)
 {
         return UArray2_height(array2);
@@ -58,12 +59,14 @@ static int height(A2 array2)
 
 
 /* Return the size of each element in the A2Methods_UArray2 array2 */
+/* Return the size of each element in the A2Methods_UArray2 array2 */
 static int size(A2 array2)
 {
         return UArray2_size(array2);
 }
 
 
+/* Always return 1 */
 /* Always return 1 */
 static int blocksize(A2 array2)
 {
@@ -74,12 +77,16 @@ static int blocksize(A2 array2)
 
 /* Return a pointer to the element at position (i, j) in the A2Methods_UArray2 
 array2 */
+/* Return a pointer to the element at position (i, j) in the A2Methods_UArray2 
+array2 */
 static A2Methods_Object *at(A2 array2, int i, int j)
 {
         return UArray2_at(array2, i, j);
 }
 
 
+/* Apply the function apply to each element of the A2Methods_UArray2 uarray2 in
+row-major order, passing cl as an additional argument */
 /* Apply the function apply to each element of the A2Methods_UArray2 uarray2 in
 row-major order, passing cl as an additional argument */
 static void map_row_major(A2Methods_UArray2 uarray2,
@@ -92,6 +99,8 @@ static void map_row_major(A2Methods_UArray2 uarray2,
 
 /* Apply the function apply to each element of the A2Methods_UArray2 uarray2 in
 column-major order, passing cl as an additional argument */
+/* Apply the function apply to each element of the A2Methods_UArray2 uarray2 in
+column-major order, passing cl as an additional argument */
 static void map_col_major(A2Methods_UArray2 uarray2,
                           A2Methods_applyfun apply,
                           void *cl)
@@ -99,6 +108,9 @@ static void map_col_major(A2Methods_UArray2 uarray2,
         UArray2_map_col_major(uarray2, (UArray2_applyfun*)apply, cl);
 }
 
+/******************************************************************************/
+                        /* THIS PART WAS PROVIDED */
+/******************************************************************************/
 /*****************************************************************************/
                         /* THIS PART WAS PROVIDED */
 /*****************************************************************************/
@@ -136,9 +148,9 @@ static void small_map_col_major(A2Methods_UArray2        a2,
         UArray2_map_col_major(a2, apply_small, &mycl);
 }
 
-/*****************************************************************************/
+/******************************************************************************/
                        /* BACK TO OUR IMPLEMENTATION */
-/*****************************************************************************/
+/******************************************************************************/
 
 /* Define the A2Methods_T struct for plain arrays */
 static struct A2Methods_T uarray2_methods_plain_struct = {

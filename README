@@ -69,6 +69,11 @@ cache size	: 16896 KB
 cache line size	: 64 B
 model name	: Intel(R) Xeon(R) Silver 4214Y CPU @ 2.20GHz
 
+cpu MHz		: 2194.844
+cache size	: 16896 KB
+cache line size	: 64 B
+model name	: Intel(R) Xeon(R) Silver 4214Y CPU @ 2.20GHz
+
 Transformation      Mapping          Total time(ns)         Time per pixel
 -rotation 0        row-major           229765536                 50
 -rotation 90       row-major           394298361                 86
